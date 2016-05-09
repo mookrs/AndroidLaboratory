@@ -27,6 +27,10 @@ public class GameView extends GridLayout {
     }
 
     private void intiGameView() {
+
+        setColumnCount(4);
+        setBackgroundColor(0xFFBBADA0);
+
         setOnTouchListener(new OnTouchListener() {
             private float startX, startY;
             private float endX, endY;
@@ -81,5 +85,24 @@ public class GameView extends GridLayout {
 
     private void moveDown() {
 
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        int cardSize = (Math.min(w, h) - 10) / 4;
+        addCards(cardSize);
+    }
+
+    private void addCards(int cardSize) {
+        Card card;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                card = new Card(getContext());
+                card.setNumber(2);
+                addView(card, cardSize, cardSize);
+            }
+        }
     }
 }
