@@ -34,7 +34,11 @@ public class Card extends FrameLayout {
 
     public void setNumber(int number) {
         this.number = number;
-        textViewNumber.setText(number + "");
+        if (number > 0) {
+            textViewNumber.setText(number + "");
+        } else {
+            textViewNumber.setText("");
+        }
     }
 
     public boolean equals(Card o) {
