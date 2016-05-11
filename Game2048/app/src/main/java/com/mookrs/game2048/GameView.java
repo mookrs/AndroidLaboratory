@@ -91,6 +91,7 @@ public class GameView extends GridLayout {
                         } else if (cardMap[i][j].equals(cardMap[i][y])) {
                             cardMap[i][j].setNumber(cardMap[i][j].getNumber() * 2);
                             cardMap[i][y].setNumber(0);
+                            MainActivity.getMainActivity().addScore(cardMap[i][j].getNumber());
                         }
                     }
                 }
@@ -102,7 +103,7 @@ public class GameView extends GridLayout {
         for (int i = 0; i < 4; i++) {
             for (int j = 3; j >= 0; j--) {
                 // 当前位置往左扫描
-                for (int y = j - 1; y >=0; y--) {
+                for (int y = j - 1; y >= 0; y--) {
                     if (cardMap[i][y].getNumber() > 0) {
                         if (cardMap[i][j].getNumber() <= 0) {
                             cardMap[i][j].setNumber(cardMap[i][y].getNumber());
@@ -111,6 +112,7 @@ public class GameView extends GridLayout {
                         } else if (cardMap[i][j].equals(cardMap[i][y])) {
                             cardMap[i][j].setNumber(cardMap[i][j].getNumber() * 2);
                             cardMap[i][y].setNumber(0);
+                            MainActivity.getMainActivity().addScore(cardMap[i][j].getNumber());
                         }
                     }
                 }
@@ -131,6 +133,7 @@ public class GameView extends GridLayout {
                         } else if (cardMap[i][j].equals(cardMap[x][j])) {
                             cardMap[i][j].setNumber(cardMap[i][j].getNumber() * 2);
                             cardMap[x][j].setNumber(0);
+                            MainActivity.getMainActivity().addScore(cardMap[i][j].getNumber());
                         }
                     }
                 }
@@ -142,7 +145,7 @@ public class GameView extends GridLayout {
         for (int j = 0; j < 4; j++) {
             for (int i = 3; i >= 0; i--) {
                 // 当前位置往上扫描
-                for (int x = i - 1; x >=0; x--) {
+                for (int x = i - 1; x >= 0; x--) {
                     if (cardMap[x][j].getNumber() > 0) {
                         if (cardMap[i][j].getNumber() <= 0) {
                             cardMap[i][j].setNumber(cardMap[x][j].getNumber());
@@ -151,6 +154,7 @@ public class GameView extends GridLayout {
                         } else if (cardMap[i][j].equals(cardMap[x][j])) {
                             cardMap[i][j].setNumber(cardMap[i][j].getNumber() * 2);
                             cardMap[x][j].setNumber(0);
+                            MainActivity.getMainActivity().addScore(cardMap[i][j].getNumber());
                         }
                     }
                 }
@@ -169,6 +173,8 @@ public class GameView extends GridLayout {
     }
 
     private void startGame() {
+        MainActivity.getMainActivity().clearScore();
+
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 cardMap[i][j].setNumber(0);
@@ -206,5 +212,9 @@ public class GameView extends GridLayout {
         Point point = emptyPoints.remove((int) (Math.random() * emptyPoints.size()));
         // 按9:1的比例生成2和4
         cardMap[point.x][point.y].setNumber(Math.random() > 0.1 ? 2 : 4);
+    }
+
+    private void checkGame(){
+        boolean isCompleted = true;
     }
 }
