@@ -1,7 +1,9 @@
 package com.mookrs.game2048;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Point;
+import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -78,6 +80,8 @@ public class GameView extends GridLayout {
     }
 
     private void moveLeft() {
+        boolean isMoved = false;
+
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 // 当前位置往右扫描
@@ -88,18 +92,27 @@ public class GameView extends GridLayout {
                             cardMap[i][y].setNumber(0);
                             // 从j+1处再来
                             y = j + 1;
+                            isMoved = true;
                         } else if (cardMap[i][j].equals(cardMap[i][y])) {
                             cardMap[i][j].setNumber(cardMap[i][j].getNumber() * 2);
                             cardMap[i][y].setNumber(0);
                             MainActivity.getMainActivity().addScore(cardMap[i][j].getNumber());
+                            isMoved = true;
                         }
                     }
                 }
             }
         }
+
+        if (isMoved) {
+            addRandomNumber();
+            checkGame();
+        }
     }
 
     private void moveRight() {
+        boolean isMoved = false;
+
         for (int i = 0; i < 4; i++) {
             for (int j = 3; j >= 0; j--) {
                 // 当前位置往左扫描
@@ -109,18 +122,27 @@ public class GameView extends GridLayout {
                             cardMap[i][j].setNumber(cardMap[i][y].getNumber());
                             cardMap[i][y].setNumber(0);
                             y = j - 1;
+                            isMoved = true;
                         } else if (cardMap[i][j].equals(cardMap[i][y])) {
                             cardMap[i][j].setNumber(cardMap[i][j].getNumber() * 2);
                             cardMap[i][y].setNumber(0);
                             MainActivity.getMainActivity().addScore(cardMap[i][j].getNumber());
+                            isMoved = true;
                         }
                     }
                 }
             }
         }
+
+        if (isMoved) {
+            addRandomNumber();
+            checkGame();
+        }
     }
 
     private void moveUp() {
+        boolean isMoved = false;
+
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 4; i++) {
                 // 当前位置往下扫描
@@ -130,18 +152,27 @@ public class GameView extends GridLayout {
                             cardMap[i][j].setNumber(cardMap[x][j].getNumber());
                             cardMap[x][j].setNumber(0);
                             x = i + 1;
+                            isMoved = true;
                         } else if (cardMap[i][j].equals(cardMap[x][j])) {
                             cardMap[i][j].setNumber(cardMap[i][j].getNumber() * 2);
                             cardMap[x][j].setNumber(0);
                             MainActivity.getMainActivity().addScore(cardMap[i][j].getNumber());
+                            isMoved = true;
                         }
                     }
                 }
             }
         }
+
+        if (isMoved) {
+            addRandomNumber();
+            checkGame();
+        }
     }
 
     private void moveDown() {
+        boolean isMoved = false;
+
         for (int j = 0; j < 4; j++) {
             for (int i = 3; i >= 0; i--) {
                 // 当前位置往上扫描
@@ -151,14 +182,21 @@ public class GameView extends GridLayout {
                             cardMap[i][j].setNumber(cardMap[x][j].getNumber());
                             cardMap[x][j].setNumber(0);
                             x = i - 1;
+                            isMoved = true;
                         } else if (cardMap[i][j].equals(cardMap[x][j])) {
                             cardMap[i][j].setNumber(cardMap[i][j].getNumber() * 2);
                             cardMap[x][j].setNumber(0);
                             MainActivity.getMainActivity().addScore(cardMap[i][j].getNumber());
+                            isMoved = true;
                         }
                     }
                 }
             }
+        }
+
+        if (isMoved) {
+            addRandomNumber();
+            checkGame();
         }
     }
 
@@ -214,7 +252,32 @@ public class GameView extends GridLayout {
         cardMap[point.x][point.y].setNumber(Math.random() > 0.1 ? 2 : 4);
     }
 
-    private void checkGame(){
+    private void checkGame() {
         boolean isCompleted = true;
+
+        ALL:
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (cardMap[i][j].getNumber() <= 0 ||
+                        (i > 0 && cardMap[i][j].equals(cardMap[i - 1][j])) ||
+                        (i < 3 && cardMap[i][j].equals(cardMap[i + 1][j])) ||
+                        (j > 0 && cardMap[i][j].equals(cardMap[i][j - 1])) ||
+                        (j < 3 && cardMap[i][j].equals(cardMap[i][j + 1]))) {
+                    isCompleted = false;
+                    break ALL;
+                }
+            }
+        }
+        if (isCompleted) {
+            new AlertDialog.Builder(getContext())
+                    .setTitle("2048")
+                    .setMessage("游戏结束。")
+                    .setPositiveButton("重新开始", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startGame();
+                        }
+                    }).show();
+        }
     }
 }
