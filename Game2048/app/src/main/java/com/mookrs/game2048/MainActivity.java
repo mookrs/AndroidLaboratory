@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void clearScore() {
         score = 0;
-        showScore();
     }
 
     public void showScore() {

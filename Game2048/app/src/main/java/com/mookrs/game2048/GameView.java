@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.graphics.Point;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.GridLayout;
@@ -210,7 +211,9 @@ public class GameView extends GridLayout {
         startGame();
     }
 
+
     private void startGame() {
+        // clearScore()如果调用showScore()，上边的onSizeChanged()会被调用两次，原因未知
         MainActivity.getMainActivity().clearScore();
 
         for (int i = 0; i < 4; i++) {
@@ -268,10 +271,11 @@ public class GameView extends GridLayout {
                 }
             }
         }
+
         if (isCompleted) {
             new AlertDialog.Builder(getContext())
                     .setTitle("2048")
-                    .setMessage("游戏结束。")
+                    .setMessage("游戏结束")
                     .setPositiveButton("重新开始", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
