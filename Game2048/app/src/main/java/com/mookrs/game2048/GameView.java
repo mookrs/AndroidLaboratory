@@ -2,6 +2,7 @@ package com.mookrs.game2048;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
@@ -98,6 +99,7 @@ public class GameView extends GridLayout {
                             cardMap[i][j].setNumber(cardMap[i][j].getNumber() * 2);
                             cardMap[i][y].setNumber(0);
                             MainActivity.getMainActivity().addScore(cardMap[i][j].getNumber());
+                            updateBestScore();
                             isMoved = true;
                         }
                     }
@@ -128,6 +130,7 @@ public class GameView extends GridLayout {
                             cardMap[i][j].setNumber(cardMap[i][j].getNumber() * 2);
                             cardMap[i][y].setNumber(0);
                             MainActivity.getMainActivity().addScore(cardMap[i][j].getNumber());
+                            updateBestScore();
                             isMoved = true;
                         }
                     }
@@ -158,6 +161,7 @@ public class GameView extends GridLayout {
                             cardMap[i][j].setNumber(cardMap[i][j].getNumber() * 2);
                             cardMap[x][j].setNumber(0);
                             MainActivity.getMainActivity().addScore(cardMap[i][j].getNumber());
+                            updateBestScore();
                             isMoved = true;
                         }
                     }
@@ -188,6 +192,7 @@ public class GameView extends GridLayout {
                             cardMap[i][j].setNumber(cardMap[i][j].getNumber() * 2);
                             cardMap[x][j].setNumber(0);
                             MainActivity.getMainActivity().addScore(cardMap[i][j].getNumber());
+                            updateBestScore();
                             isMoved = true;
                         }
                     }
@@ -282,6 +287,19 @@ public class GameView extends GridLayout {
                             startGame();
                         }
                     }).show();
+        }
+    }
+
+    private void updateBestScore() {
+        int bestScore, score;
+        SharedPreferences sp = getContext().getSharedPreferences("game2048", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        score = MainActivity.getMainActivity().getScore();
+        bestScore = sp.getInt("best", 0);
+        if (bestScore < score) {
+            editor.putInt("best", score);
+            MainActivity.getMainActivity().setBestScore(score);
+            editor.commit();
         }
     }
 }
