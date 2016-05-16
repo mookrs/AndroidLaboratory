@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences sp = getSharedPreferences("game2048", Context.MODE_PRIVATE);
         bestScore = sp.getInt("best", 0);
-        textViewScore.setText(bestScore + "");
+        textViewBest.setText(bestScore + "");
 
         mainActivity = this;
     }
