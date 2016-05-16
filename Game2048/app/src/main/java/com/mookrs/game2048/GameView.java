@@ -89,18 +89,20 @@ public class GameView extends GridLayout {
                 // 当前位置往右扫描
                 for (int y = j + 1; y < 4; y++) {
                     if (cardMap[i][y].getNumber() > 0) {
-                        if (cardMap[i][j].getNumber() <= 0) {
+                        if (cardMap[i][j].getNumber() <= 0) {   // 初始位置为0
                             cardMap[i][j].setNumber(cardMap[i][y].getNumber());
                             cardMap[i][y].setNumber(0);
                             // 从j+1处再来
                             y = j + 1;
                             isMoved = true;
-                        } else if (cardMap[i][j].equals(cardMap[i][y])) {
+                        } else if (cardMap[i][j].equals(cardMap[i][y])) {   // 当前位置和初始位置数字相同
                             cardMap[i][j].setNumber(cardMap[i][j].getNumber() * 2);
                             cardMap[i][y].setNumber(0);
                             MainActivity.getMainActivity().addScore(cardMap[i][j].getNumber());
                             updateBestScore();
                             isMoved = true;
+                        } else {    // 当前位置不为0，和初始位置数字不同
+                            break;
                         }
                     }
                 }
@@ -132,6 +134,8 @@ public class GameView extends GridLayout {
                             MainActivity.getMainActivity().addScore(cardMap[i][j].getNumber());
                             updateBestScore();
                             isMoved = true;
+                        } else {
+                            break;
                         }
                     }
                 }
@@ -163,6 +167,8 @@ public class GameView extends GridLayout {
                             MainActivity.getMainActivity().addScore(cardMap[i][j].getNumber());
                             updateBestScore();
                             isMoved = true;
+                        } else {
+                            break;
                         }
                     }
                 }
@@ -194,6 +200,8 @@ public class GameView extends GridLayout {
                             MainActivity.getMainActivity().addScore(cardMap[i][j].getNumber());
                             updateBestScore();
                             isMoved = true;
+                        } else {
+                            break;
                         }
                     }
                 }
