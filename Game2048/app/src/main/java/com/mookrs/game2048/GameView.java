@@ -81,6 +81,7 @@ public class GameView extends GridLayout {
         });
     }
 
+    // 缺陷：如果出现 2 2 4 8 的情形，向右滑动结果正常即 0 4 4 8，但向左滑动会合并成 16 0 0 0
     private void moveLeft() {
         boolean isMoved = false;
 
